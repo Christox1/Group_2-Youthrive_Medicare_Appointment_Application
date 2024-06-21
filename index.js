@@ -9,6 +9,7 @@ import appointmentRoutes from './backend.js/routes/appointmentRoutes.js'
 import bodyParser from 'body-parser'
 import dotenv from 'dotenv'
 import logger from 'morgan'
+import cloudinary from 'cloudinary'
 
 const app = express()
 app.use(bodyParser.json())
@@ -18,12 +19,17 @@ const corOptions = {
     origin: true,
 }
 
-
 const PORT = process.env.PORT || 8000
 app.use(logger("dev"))
 app.use(express.json())
 app.use(cookieParser())
 app.use(cors(corOptions))
+
+cloudinary.v2.config({
+    cloud_name: process.env.CLOUDINARY_NAME,
+    api_key: process.env.API_Key,
+    api_secret: process.env.API_Secret,
+  });
 
 app.use('/api/auth', authRoutes)
 app.use('/api/user', userRoutes)
